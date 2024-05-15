@@ -73,7 +73,29 @@ abstract class Post_Type_Service {
 		$loader->add_action( 'save_post', static::class, 'save_item', 10, 3 );
 		// Add meta boxes
 		$loader->add_action( 'add_meta_boxes', static::class, 'add_meta_boxes' );
+        // Add custom columns
+		$loader->add_filter( 'manage_'.static::get_post_type().'_posts_columns', static::class, 'add_custom_columns' );
+        // Add custom column content
+		$loader->add_action( 'manage_'.static::get_post_type().'_posts_custom_column', static::class, 'custom_column_content', 10, 2 );
 	}
+
+
+    /**
+	 * @param array $columns
+	 *
+	 * @return array
+	 */
+	public static function add_custom_columns( array $columns ) {
+		return $columns;
+	}
+
+    /**
+	 * @param string $column
+	 * @param int $post_id
+	 *
+	 * @return void
+	 */
+	public static function custom_column_content($column, $post_id) { return; }
 
 	/**
 	 * @param array $labels

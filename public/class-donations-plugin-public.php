@@ -61,20 +61,8 @@ class Donations_Plugin_Public {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Donations_Plugin_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Donations_Plugin_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/donations-plugin-public.css', array(), $this->version, 'all' );
-
+	
 	}
 
 	/**
@@ -84,20 +72,59 @@ class Donations_Plugin_Public {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Donations_Plugin_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Donations_Plugin_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/donations-plugin-public.js', array( 'jquery' ), $this->version, false );
+	
+	}
 
+
+	/**
+	 * Register donation shortcode to show donation form
+	 *
+	 * @since    1.0.0
+	 */
+	public function register_donation_shortcode() {
+
+		add_shortcode(Donation_Service::SHORTCODE, [$this, 'display_donation_form']);
+
+	}
+
+	/**
+	 * Display form with shortcode
+	 * 
+	 * @param     array    $atts    Attributes
+	 *
+	 * @since    1.0.0
+	 * 
+	 * @return   string 
+	 */
+	public function display_donation_form($atts) {
+		 // Attributes
+		 $atts = shortcode_atts(
+			array(
+				'id' => null
+			),
+			$atts,
+			Donation_Service::SHORTCODE
+		);
+
+		// Capture the output of the included template file
+		ob_start();
+
+		// Donation id
+		$donation_id = $atts['id'];
+
+		// Gets template
+		$template_path = dirname( __FILE__ ) . '/partials/donation-form-template.php';
+
+		// Check if exists template path
+		if ($template_path) {
+			include($template_path);
+		} else {
+			echo '<!-- Template file not found -->';
+		}
+	
+		// Return html
+		return ob_get_clean();
 	}
 
 }

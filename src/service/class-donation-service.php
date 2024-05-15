@@ -8,6 +8,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Donation_Service
  */
 class Donation_Service extends Post_Type_Service {
+
+    // Defines donations shortcode
+    const SHORTCODE = 'simple_donation';
+
 	/**
 	 * @inheritDoc
 	 */
@@ -28,4 +32,26 @@ class Donation_Service extends Post_Type_Service {
 	public static function get_post_type(): string {
 		return 'donation';
 	}
+
+    /**
+	 * @param array $columns
+	 *
+	 * @return array
+	 */
+	public static function add_custom_columns( array $columns ) {
+        $columns['donation_shortcode'] = 'Donation shortcode';
+		return $columns;
+	}
+
+    /**
+	 * @param string $column
+	 * @param int $post_id
+	 *
+	 * @return void
+	 */
+	public static function custom_column_content($column, $post_id) { 
+        if($column === 'donation_shortcode') {
+            echo '['.Donation_Service::SHORTCODE.' id="'.$post_id.'"]';
+        }
+     }
 }
