@@ -80,7 +80,7 @@ class Donations_Plugin {
 		$this->define_public_hooks();
 		$this->init_post_types();
 		$this->init_shortcodes();
-
+		$this->init_pages();
 	}
 
 	/**
@@ -149,6 +149,13 @@ class Donations_Plugin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/entity/class-donation.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/service/class-donation-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/repository/class-donation-repository.php';
+
+		/**
+		 * The classes responsible for defining all actions about donation settings.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/service/class-settings-service.php';
+
+
 		$this->loader = new Donations_Plugin_Loader();
 
 	}
@@ -173,6 +180,16 @@ class Donations_Plugin {
 		// Initialize shortcode
 		$donation_shortcode = new Donation_Shortcode();
 		$donation_shortcode->register_shortcode();
+	}
+
+	/**
+	 * Defines pages.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function init_pages() {
+		Settings_Service::load_page($this->loader);
 	}
 
 	/**
