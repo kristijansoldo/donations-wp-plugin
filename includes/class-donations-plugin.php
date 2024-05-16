@@ -79,6 +79,7 @@ class Donations_Plugin {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 		$this->init_post_types();
+		$this->init_shortcodes();
 
 	}
 
@@ -130,6 +131,12 @@ class Donations_Plugin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/service/class-annotation-service.php';
 
 		/**
+		 * The classes responsible for defining shortcodes
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/shortcode/class-shortcode.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/shortcode/class-donation-shortcode.php';
+
+		/**
 		 * The classes responsible for defining all actions about cpts.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/entity/class-post-type.php';
@@ -154,6 +161,18 @@ class Donations_Plugin {
 	 */
 	private function init_post_types() {
 		Donation_Service::load_post_type( $this->loader );
+	}
+
+	/**
+	 * Defines shortcodes
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function init_shortcodes() {
+		// Initialize shortcode
+		$donation_shortcode = new Donation_Shortcode();
+		$donation_shortcode->register_shortcode();
 	}
 
 	/**
@@ -202,7 +221,6 @@ class Donations_Plugin {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		$plugin_public->register_donation_shortcode();
 	}
 
 	/**
