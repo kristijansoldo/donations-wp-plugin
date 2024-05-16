@@ -97,4 +97,12 @@ class Settings_Service {
 		$name = static::PAYPAL_SETTINGS_FIELDS['client_secret'];
 		echo "<input type='text' name='$name' value='$setting' />";
 	}
+
+	public static function get_client_id() {
+		return get_option(static::PAYPAL_SETTINGS_FIELDS['client_id']);
+	}
+
+	public static function get_client_secret() {
+		return get_option(static::PAYPAL_SETTINGS_FIELDS['client_secret']);
+	}
 }

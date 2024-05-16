@@ -81,6 +81,7 @@ class Donations_Plugin {
 		$this->init_post_types();
 		$this->init_shortcodes();
 		$this->init_pages();
+		$this->load_controllers();
 	}
 
 	/**
@@ -155,6 +156,11 @@ class Donations_Plugin {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/service/class-settings-service.php';
 
+		/**
+		 * Load base controller class and controllers
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/controller/class-controller.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/controller/class-paypal-controller.php';
 
 		$this->loader = new Donations_Plugin_Loader();
 
@@ -190,6 +196,20 @@ class Donations_Plugin {
 	 */
 	private function init_pages() {
 		Settings_Service::load_page($this->loader);
+	}
+
+	/**
+	 * Initializes controllers.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function load_controllers() {
+		// Initialize paypal controller
+		$paypal_controller = new PayPal_Controller();
+
+		// Load paypal controller
+		$paypal_controller->load($this->loader);
 	}
 
 	/**
