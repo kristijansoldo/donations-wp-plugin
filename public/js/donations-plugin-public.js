@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Fetch donation id input
   const donationIdInput = document.getElementById('donation_id');
+  const thankYouMessageInput = document.getElementById('thank_you_message');
 
   // Select all buttons with the class 'js-select-amount'
   const buttons = document.querySelectorAll('.js-select-amount');
@@ -45,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } catch (error) {
         console.error(error);
-        resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
+        resultErrorMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
       }
     },
     onApprove: async function (data, actions) {
@@ -70,9 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const transaction =
               orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
               orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
-          resultMessage(
-              `Transaction ${transaction.status}: ${transaction.id}<br><br>See console for all available details`,
-          );
+          resultMessage(thankYouMessageInput.value);
           console.log(
               'Capture result',
               orderData,
@@ -81,13 +80,35 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } catch (error) {
         console.error(error);
-        resultMessage(`Sorry, your transaction could not be processed...<br><br>${error}`);
+        resultErrorMessage(`Sorry, your transaction could not be processed...<br><br>${error}`);
       }
     },
   }).render('#paypal-button-container');
 
   function resultMessage(message) {
     const container = document.querySelector('#result-message');
-    container.innerHTML = message;
+    container.innerHTML = `${message} <span id="dp-countdown">5s</span>`;
+    container.classList.remove("dp-none")
+    startCountdown(container);
+  }
+
+  function resultErrorMessage(message) {
+    const container = document.querySelector('#result-error-message');
+    container.innerHTML = `${message} <span id="dp-countdown">5s</span>`;
+    container.classList.remove("dp-none")
+    startCountdown(container);
+  }
+
+  function startCountdown(container) {
+    let countdownElement = container.querySelector('#dp-countdown');
+    let countdown = 5;
+    const interval = setInterval(() => {
+      countdown--;
+      countdownElement.textContent = countdown+'s';
+      if (countdown <= 0) {
+        clearInterval(interval);
+        container.classList.add("dp-none");
+      }
+    }, 1000);
   }
 });

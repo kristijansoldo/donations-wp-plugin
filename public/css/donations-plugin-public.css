@@ -7,16 +7,40 @@
     background-color: #ffeb3b !important;
     color: #000 !important;
     border: 1px solid #ccc !important;
-    padding: 0.01em 16px;
     margin-top: 16px;
     margin-bottom: 16px;
+    padding: 10px 15px;
+    border-radius: 4px;
 }
 
+.donations-plugin-success {
+    background-color: #5cb85c !important;
+    color: #000 !important;
+    border: 1px solid #ccc !important;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding: 10px 15px;
+    border-radius: 4px;
+}
 
+.donations-plugin-error {
+    background-color: #cc0000 !important;
+    color: #000 !important;
+    border: 1px solid #ccc !important;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding: 10px 15px;
+    border-radius: 4px;
+}
+
+#dp-countdown {
+    float: right;
+}
 
 .dp-input-group {
     position: relative;
     margin-top: 10px;
+    margin-bottom: 15px;
 }
 
 .dp-input-group i {
@@ -25,7 +49,7 @@
     transform: translate(0, -50%);
     top: 50%;
     pointer-events: none;
-    width: 42px;
+    width: 60px;
     text-align: center;
     font-style: normal;
     right: 0;
@@ -72,6 +96,10 @@
 
 .dp-button-group {
     display: inline;
+}
+
+.dp-none {
+    display: none;
 }
 
 .dp-button-group button {

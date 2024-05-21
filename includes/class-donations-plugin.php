@@ -164,6 +164,8 @@ class Donations_Plugin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/dto/class-setting-field-dto.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/settings/class-settings.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/settings/class-paypal-settings.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/settings/class-general-settings.php';
+
 
 		$this->loader = new Donations_Plugin_Loader();
 
@@ -198,11 +200,13 @@ class Donations_Plugin {
 	 * @access   private
 	 */
 	private function init_settings() {
-		// Initialize paypal settings
+		// Initialize settings
 		$payPalSettings = new PayPal_Settings();
+		$generalSettings = new General_Settings();
 
-		// Load paypal settings
-		$payPalSettings->load_page($this->loader);
+		// Load settings
+		$payPalSettings->load($this->loader);
+		$generalSettings->load($this->loader);
 	}
 
 	/**

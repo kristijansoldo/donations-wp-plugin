@@ -24,7 +24,7 @@ abstract class Settings {
 	 *
 	 * @return void
 	 */
-	public function load_page( Donations_Plugin_Loader $loader ) {
+	public function load( Donations_Plugin_Loader $loader ) {
 		// Hook to add the settings page to the admin menu
 		$loader->add_action( 'admin_menu', $this, 'init_settings_page' );
 		$loader->add_action( 'admin_init', $this, 'register_settings' );
