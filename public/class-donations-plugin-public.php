@@ -72,7 +72,7 @@ class Donations_Plugin_Public {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( 'paypal-sdk', 'https://www.paypal.com/sdk/js?client-id=AeTCinCC2eyrihYvTkRX0QFjdkZLK811s4xrHV_K-xTX_gbl5y5FEOxfOmZqXZ2nXzak6sbEDgHY_EsR&currency=USD', array( ), null, false );
+		wp_enqueue_script( 'paypal-sdk', 'https://www.paypal.com/sdk/js?client-id='.PayPal_Settings::get(PayPal_Settings::CLIENT_ID).'&currency=EUR', array( ), null, false );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/donations-plugin-public.js', array( 'jquery' ), $this->version, false );
 	
 	}

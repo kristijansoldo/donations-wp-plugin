@@ -80,7 +80,7 @@ class Donations_Plugin {
 		$this->define_public_hooks();
 		$this->init_post_types();
 		$this->init_shortcodes();
-		$this->init_pages();
+		$this->init_settings();
 		$this->load_controllers();
 	}
 
@@ -152,15 +152,18 @@ class Donations_Plugin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/repository/class-donation-repository.php';
 
 		/**
-		 * The classes responsible for defining all actions about donation settings.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/service/class-settings-service.php';
-
-		/**
 		 * Load base controller class and controllers
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/controller/class-controller.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/controller/class-paypal-controller.php';
+
+
+		/**
+		 * Load settings
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/dto/class-setting-field-dto.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/settings/class-settings.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/settings/class-paypal-settings.php';
 
 		$this->loader = new Donations_Plugin_Loader();
 
@@ -194,8 +197,12 @@ class Donations_Plugin {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function init_pages() {
-		Settings_Service::load_page($this->loader);
+	private function init_settings() {
+		// Initialize paypal settings
+		$payPalSettings = new PayPal_Settings();
+
+		// Load paypal settings
+		$payPalSettings->load_page($this->loader);
 	}
 
 	/**

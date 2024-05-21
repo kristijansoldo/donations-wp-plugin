@@ -1,6 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Fetch amount input
+  const amountInput = document.getElementById('amount');
+
+  // Fetch donation id input
+  const donationIdInput = document.getElementById('donation_id');
+
+  // Select all buttons with the class 'js-select-amount'
+  const buttons = document.querySelectorAll('.js-select-amount');
+
+  // Add click event listener to each button
+  buttons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Trigger your desired function or action here
+      amountInput.value = this.getAttribute('data-value');
+    });
+  });
+
   window.paypal.Buttons({
     createOrder: async function () {
+      const donationId = donationIdInput.value;
+      const amount = amountInput.value;
       try {
         const response = await fetch('/wp-json/dp/v1/orders', {
           method: 'POST',
@@ -8,12 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            cart: [
-              {
-                id: 1,
-                quantity: 1,
-              },
-            ],
+            amount: amount,
           }),
         });
 

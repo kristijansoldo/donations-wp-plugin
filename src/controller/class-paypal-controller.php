@@ -29,7 +29,7 @@ class PayPal_Controller extends Controller {
 
 
 	private function generate_access_token() {
-		$auth = base64_encode(Settings_Service::get_client_id() . ':' . Settings_Service::get_client_secret());
+		$auth = base64_encode(PayPal_Settings::get(PayPal_Settings::CLIENT_ID) . ':' . PayPal_Settings::get(PayPal_Settings::CLIENT_SECRET));
 		$response = wp_remote_post($this->api_base . '/v1/oauth2/token', array(
 			'method' => 'POST',
 			'body' => array('grant_type' => 'client_credentials'),
@@ -57,7 +57,7 @@ class PayPal_Controller extends Controller {
 	 * @return WP_REST_Response
 	 */
 	public function create_order(WP_REST_Request $request) {
-		$cart = $request->get_param('cart');
+		$amount = $request->get_param('amount');
 		$access_token = $this->generate_access_token();
 
 		if (!$access_token) {
@@ -75,8 +75,8 @@ class PayPal_Controller extends Controller {
 				'purchase_units' => array(
 					array(
 						'amount' => array(
-							'currency_code' => 'USD',
-							'value' => '100.00', // Calculate based on the cart
+							'currency_code' => 'EUR',
+							'value' => $amount, // Calculate based on the cart
 						),
 					),
 				),
