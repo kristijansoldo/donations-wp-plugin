@@ -124,7 +124,7 @@ abstract class Settings {
 	 *
 	 * @return mixed
 	 */
-	public static function get(string $option): mixed {
+	public static function get(string $option) {
 		return get_option($option);
 	}
 }

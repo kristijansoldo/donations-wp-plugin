@@ -72,7 +72,6 @@ class Donations_Plugin_Public {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( 'paypal-sdk', 'https://www.paypal.com/sdk/js?client-id='.PayPal_Settings::get(PayPal_Settings::CLIENT_ID).'&currency='.General_Settings::get(General_Settings::CURRENCY), array( ), null, false );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/donations-plugin-public.js', array( 'jquery' ), $this->version, false );
 	
 	}

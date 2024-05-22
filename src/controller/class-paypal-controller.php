@@ -5,10 +5,6 @@
  */
 class PayPal_Controller extends Controller {
 
-
-	private $api_base = 'https://api-m.sandbox.paypal.com';
-
-
 	/**
 	 * @inheritDoc
 	 */
@@ -30,7 +26,7 @@ class PayPal_Controller extends Controller {
 
 	private function generate_access_token() {
 		$auth = base64_encode(PayPal_Settings::get(PayPal_Settings::CLIENT_ID) . ':' . PayPal_Settings::get(PayPal_Settings::CLIENT_SECRET));
-		$response = wp_remote_post($this->api_base . '/v1/oauth2/token', array(
+		$response = wp_remote_post(PayPal_Settings::get(PayPal_Settings::ENVIRONMENT_URL) . '/v1/oauth2/token', array(
 			'method' => 'POST',
 			'body' => array('grant_type' => 'client_credentials'),
 			'headers' => array(
@@ -49,6 +45,29 @@ class PayPal_Controller extends Controller {
 		return $data->access_token ?? null;
 	}
 
+	public function generate_client_token() {
+		$access_token = $this->generate_access_token();
+
+		$response = wp_remote_post(PayPal_Settings::get(PayPal_Settings::ENVIRONMENT_URL) . '/v1/identity/generate-token', array(
+			'method' => 'POST',
+			'headers' => array(
+				'Content-Type' => 'application/json',
+				'Accept-Language' => 'en_US',
+				'Authorization' => 'Bearer ' . $access_token
+			),
+		));
+
+
+		if (is_wp_error($response)) {
+			return null;
+		}
+
+		$body = wp_remote_retrieve_body($response);
+		$data = json_decode($body);
+
+		return $data->client_token ?? null;
+	}
+
 	/**
 	 * Create order
 	 *
@@ -64,7 +83,7 @@ class PayPal_Controller extends Controller {
 			return new WP_Error('failed_to_generate_access_token', 'Failed to generate access token', array('status' => 500));
 		}
 
-		$response = wp_remote_post($this->api_base . '/v2/checkout/orders', array(
+		$response = wp_remote_post(PayPal_Settings::get(PayPal_Settings::ENVIRONMENT_URL) . '/v2/checkout/orders', array(
 			'method' => 'POST',
 			'headers' => array(
 				'Content-Type' => 'application/json',
@@ -79,7 +98,7 @@ class PayPal_Controller extends Controller {
 							'value' => $amount, // Calculate based on the cart
 						),
 					),
-				),
+				)
 			)),
 		));
 
@@ -94,7 +113,7 @@ class PayPal_Controller extends Controller {
 			return new WP_Error('failed_to_generate_access_token', 'Failed to generate access token', array('status' => 500));
 		}
 
-		$response = wp_remote_post($this->api_base . "/v2/checkout/orders/{$order_id}/capture", array(
+		$response = wp_remote_post(PayPal_Settings::get(PayPal_Settings::ENVIRONMENT_URL) . "/v2/checkout/orders/{$order_id}/capture", array(
 			'method' => 'POST',
 			'headers' => array(
 				'Content-Type' => 'application/json',

@@ -2,6 +2,11 @@
 
 class General_Settings extends Settings {
 
+	const CURRENCY_SYMBOL = [
+		'EUR' => '€',
+		'USD' => '$'
+	];
+
 	const CUSTOM_CSS_CLASS = '_dp_general_custom_css_class';
 	const THANK_YOU_MESSAGE = '_dp_thank_you_message';
 	const CURRENCY = '_dp_currency';

@@ -103,6 +103,11 @@ class Donations_Plugin {
 	private function load_dependencies() {
 
 		/**
+		 * Load constants
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'constants.php';
+
+		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
