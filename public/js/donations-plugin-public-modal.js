@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if(!paypal) return;
 
+  if(document.getElementById('paypal-button-containermodal') == null) return;
+
   // Fetch amount input
   const amountInput = document.getElementById('amountmodal');
   const donationIdInput = document.getElementById('donation_idmodal');

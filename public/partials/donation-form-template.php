@@ -32,6 +32,8 @@ if ( ! empty( $predefined_amounts_string ) ) {
 	<?php if ( empty( PayPal_Settings::get( PayPal_Settings::CLIENT_ID ) ) || empty( PayPal_Settings::get( PayPal_Settings::CLIENT_SECRET ) ) ): ?>
         <div class="donations-plugin-warning">Please go to WP-Admin -> Donations -> Settings and set PayPal client id and secret.</div>
 	<?php else: ?>
+        <input type="hidden" name="donation_id" id="donation_id" value="<?php echo $donation_id ?>">
+
         <input type="hidden" name="thank_you_message" id="thank_you_message<?php echo $id_suffix; ?>" value="<?php echo General_Settings::get( General_Settings::THANK_YOU_MESSAGE ); ?>">
 
         <input type="hidden" name="e_card_number" id="e_card_number<?php echo $id_suffix; ?>" value="<?php _e('Card number', DP_PLUGIN_TEXTOMAIN) ?>">
