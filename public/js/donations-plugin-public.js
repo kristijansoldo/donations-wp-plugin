@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const thankYouMessageInput = document.getElementById('thank_you_message');
   const cardNumberEl = document.getElementById('e_card_number');
   const mmyyEl = document.getElementById('e_mmyy');
-  const cardHolderInput = document.getElementById('e_mmyy');
+  const cardHolderInput = document.getElementById('card-holder');
   const submitButton = document.getElementById('submit-button');
 
   // Select all buttons with the class 'js-select-amount'
@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
           headers: {
             'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ donationId: donationIdInput.value }),
         });
 
         const orderData = await response.json();
@@ -131,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
           headers: {
             'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ donationId: donationIdInput.value })
         }).then(res => res.json()).then(orderData => {
           const transaction = orderData.purchase_units[0].payments.captures[0];
           resultMessage(thankYouMessageInput.value);

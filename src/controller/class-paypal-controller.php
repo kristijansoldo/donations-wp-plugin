@@ -5,6 +5,12 @@
  */
 class PayPal_Controller extends Controller {
 
+	private $donation_payment_service;
+
+	public function __construct() {
+		$this->donation_payment_service = new Donation_Payment_Service();
+	}
+
 	/**
 	 * @inheritDoc
 	 */
@@ -107,11 +113,44 @@ class PayPal_Controller extends Controller {
 
 	public function capture_order(WP_REST_Request $request) {
 		$order_id = $request->get_param('orderID');
+		$donation_id = $request->get_param('donationId');
 		$access_token = $this->generate_access_token();
 
 		if (!$access_token) {
 			return new WP_Error('failed_to_generate_access_token', 'Failed to generate access token', array('status' => 500));
 		}
+
+		$orderDetailsResponse = wp_remote_get(PayPal_Settings::get(PayPal_Settings::ENVIRONMENT_URL) . "/v2/checkout/orders/{$order_id}", array(
+			'method' => 'GET',
+			'headers' => array(
+				'Content-Type' => 'application/json',
+				'Authorization' => 'Bearer ' . $access_token,
+			),
+		));
+
+
+		$orderDetailsBody = wp_remote_retrieve_body($orderDetailsResponse);
+		$orderDetailsData = json_decode($orderDetailsBody);
+		$full_name = null;
+
+		if(isset($orderDetailsData->payment_source->paypal)) {
+			$full_name = $orderDetailsData->payment_source->paypal->name->given_name.' '.$orderDetailsData->payment_source->paypal->name->surname;
+		}
+
+		if(isset($orderDetailsData->payment_source->card)) {
+			$full_name = $orderDetailsData->payment_source->card->name;
+		}
+
+		$purchase_value = $orderDetailsData->purchase_units[0]->amount->value;
+
+		// Initialize donation payment
+		$donation_payment = new Donation_Payment();
+
+		// Fill with data
+		$donation_payment->title = $full_name;
+		$donation_payment->amount = $purchase_value;
+		$donation_payment->order_id = $order_id;
+		$donation_payment->donation_id = $donation_id;
 
 		$response = wp_remote_post(PayPal_Settings::get(PayPal_Settings::ENVIRONMENT_URL) . "/v2/checkout/orders/{$order_id}/capture", array(
 			'method' => 'POST',
@@ -120,6 +159,9 @@ class PayPal_Controller extends Controller {
 				'Authorization' => 'Bearer ' . $access_token,
 			),
 		));
+
+		// Create donation payment
+		$this->donation_payment_service->create($donation_payment);
 
 		return $this->handle_response($response);
 	}

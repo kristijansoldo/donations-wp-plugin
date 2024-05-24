@@ -35,7 +35,7 @@ class Donations_Plugin {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Donations_Plugin_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Donations_Plugin_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -44,7 +44,7 @@ class Donations_Plugin {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 * @var      string $plugin_name The string used to uniquely identify this plugin.
 	 */
 	protected $plugin_name;
 
@@ -53,7 +53,7 @@ class Donations_Plugin {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @var      string $version The current version of the plugin.
 	 */
 	protected $version;
 
@@ -141,6 +141,7 @@ class Donations_Plugin {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/shortcode/class-shortcode.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/shortcode/class-donation-shortcode.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/shortcode/class-progress-bar-shortcode.php';
 
 		/**
 		 * The classes responsible for defining all actions about cpts.
@@ -157,11 +158,17 @@ class Donations_Plugin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/repository/class-donation-repository.php';
 
 		/**
+		 * The classes responsible for defining all actions about donation payments.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/entity/class-donation-payment.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/service/class-donation-payment-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/repository/class-donation-payment-repository.php';
+
+		/**
 		 * Load base controller class and controllers
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/controller/class-controller.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/controller/class-paypal-controller.php';
-
 
 		/**
 		 * Load settings
@@ -184,6 +191,7 @@ class Donations_Plugin {
 	 */
 	private function init_post_types() {
 		Donation_Service::load_post_type( $this->loader );
+		Donation_Payment_Service::load_post_type( $this->loader );
 	}
 
 	/**
@@ -195,7 +203,11 @@ class Donations_Plugin {
 	private function init_shortcodes() {
 		// Initialize shortcode
 		$donation_shortcode = new Donation_Shortcode();
+		$progress_bar_shortcode = new Progress_Bar_Shortcode();
+
+		// Initialize
 		$donation_shortcode->register_shortcode();
+		$progress_bar_shortcode->register_shortcode();
 	}
 
 	/**
@@ -206,12 +218,12 @@ class Donations_Plugin {
 	 */
 	private function init_settings() {
 		// Initialize settings
-		$payPalSettings = new PayPal_Settings();
+		$payPalSettings  = new PayPal_Settings();
 		$generalSettings = new General_Settings();
 
 		// Load settings
-		$payPalSettings->load($this->loader);
-		$generalSettings->load($this->loader);
+		$payPalSettings->load( $this->loader );
+		$generalSettings->load( $this->loader );
 	}
 
 	/**
@@ -225,7 +237,7 @@ class Donations_Plugin {
 		$paypal_controller = new PayPal_Controller();
 
 		// Load paypal controller
-		$paypal_controller->load($this->loader);
+		$paypal_controller->load( $this->loader );
 	}
 
 	/**
@@ -289,8 +301,8 @@ class Donations_Plugin {
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
@@ -299,8 +311,8 @@ class Donations_Plugin {
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    Donations_Plugin_Loader    Orchestrates the hooks of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -309,8 +321,8 @@ class Donations_Plugin {
 	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_version() {
 		return $this->version;

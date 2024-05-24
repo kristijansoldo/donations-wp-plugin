@@ -105,7 +105,7 @@ abstract class Post_Type_Service {
 	public static function get_args( array $labels ) {
 		return array(
 			'labels'             => $labels,
-			'description'        => __( 'Description.', 'donations-plugin' ),
+			'description'        => __( 'Description.', DP_PLUGIN_TEXTOMAIN ),
 			'public'             => true,
 			'publicly_queryable' => false,
 			'show_ui'            => true,
@@ -129,28 +129,36 @@ abstract class Post_Type_Service {
 	}
 
 	/**
+	 * @return array
+	 */
+	public static function get_labels( ) {
+		return array(
+			'name'               => _x( static::get_plural_label(), 'post type general name', DP_PLUGIN_TEXTOMAIN ),
+			'singular_name'      => _x( static::get_singular_label(), 'post type singular name', DP_PLUGIN_TEXTOMAIN ),
+			'menu_name'          => _x( static::get_plural_label(), 'admin menu', DP_PLUGIN_TEXTOMAIN ),
+			'name_admin_bar'     => _x( static::get_plural_label(), 'add new on admin bar', DP_PLUGIN_TEXTOMAIN ),
+			'add_new'            => _x( 'Add New', static::get_post_type(), DP_PLUGIN_TEXTOMAIN ),
+			'add_new_item'       => __( 'Add New ' . static::get_singular_label(), DP_PLUGIN_TEXTOMAIN ),
+			'new_item'           => __( 'New ' . static::get_plural_label(), DP_PLUGIN_TEXTOMAIN ),
+			'edit_item'          => __( 'Edit ' . static::get_singular_label(), DP_PLUGIN_TEXTOMAIN ),
+			'view_item'          => __( 'View ' . static::get_plural_label(), DP_PLUGIN_TEXTOMAIN ),
+			'all_items'          => __( 'All ' . static::get_plural_label(), DP_PLUGIN_TEXTOMAIN ),
+			'search_items'       => __( 'Search ' . static::get_plural_label(), DP_PLUGIN_TEXTOMAIN ),
+			'parent_item_colon'  => __( 'Parent ' . static::get_singular_label() . ':', DP_PLUGIN_TEXTOMAIN ),
+			'not_found'          => __( 'No ' . static::get_plural_label() . ' found.', DP_PLUGIN_TEXTOMAIN ),
+			'not_found_in_trash' => __( 'No ' . static::get_plural_label() . ' found in Trash.', DP_PLUGIN_TEXTOMAIN ),
+		);
+
+	}
+
+	/**
 	 * Register post type.
 	 *
 	 * @since   1.0.0
 	 */
 	public static function init_post_type() {
 		// Labels
-		$labels = array(
-			'name'               => _x( static::get_plural_label(), 'post type general name', 'donations-plugin' ),
-			'singular_name'      => _x( static::get_singular_label(), 'post type singular name', 'donations-plugin' ),
-			'menu_name'          => _x( static::get_plural_label(), 'admin menu', 'donations-plugin' ),
-			'name_admin_bar'     => _x( static::get_plural_label(), 'add new on admin bar', 'donations-plugin' ),
-			'add_new'            => _x( 'Add New', static::get_post_type(), 'donations-plugin' ),
-			'add_new_item'       => __( 'Add New ' . static::get_singular_label(), 'donations-plugin' ),
-			'new_item'           => __( 'New ' . static::get_plural_label(), 'donations-plugin' ),
-			'edit_item'          => __( 'Edit ' . static::get_singular_label(), 'donations-plugin' ),
-			'view_item'          => __( 'View ' . static::get_plural_label(), 'donations-plugin' ),
-			'all_items'          => __( 'All ' . static::get_plural_label(), 'donations-plugin' ),
-			'search_items'       => __( 'Search ' . static::get_plural_label(), 'donations-plugin' ),
-			'parent_item_colon'  => __( 'Parent ' . static::get_singular_label() . ':', 'donations-plugin' ),
-			'not_found'          => __( 'No ' . static::get_plural_label() . ' found.', 'donations-plugin' ),
-			'not_found_in_trash' => __( 'No ' . static::get_plural_label() . ' found in Trash.', 'donations-plugin' ),
-		);
+		$labels = static::get_labels();
 
 		// Args
 		$args = static::get_args( $labels );
@@ -169,7 +177,7 @@ abstract class Post_Type_Service {
 		// Add file informations meta box
 		add_meta_box(
 			static::get_post_type() . '-informations',
-			__( static::get_singular_label() . ' informations', 'donations-plugin' ),
+			__( static::get_singular_label() . ' informations', DP_PLUGIN_TEXTOMAIN),
 			[
 				static::class,
 				'render_meta_box',

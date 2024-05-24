@@ -71,4 +71,22 @@ abstract class Post_Type_Repository {
 		}, $wp_posts );
 	}
 
+	/**
+	 * Get by id.
+	 *
+	 * @param int $id
+	 *
+	 * @return object
+	 */
+	public function get_by_id( $id ) {
+		// Gets class name
+		$class_name = $this->getClassName();
+
+		// Get post
+		$wp_post = get_post( $id );
+
+		// Returns job
+		return new $class_name( $wp_post );
+	}
+
 }

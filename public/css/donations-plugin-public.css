@@ -136,3 +136,21 @@
     padding: 3px 6px;
     cursor: pointer;
 }
+
+.dp-progress-bar {
+    width: 100%;
+    background-color: #ddd;
+}
+
+.dp-bar {
+    width: 20%;
+    height: 30px;
+    background-color: #2c2e2f;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+}
+
+.dp-funded-info h5 {
+    margin-bottom: 10px;
+}
