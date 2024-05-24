@@ -3,16 +3,16 @@ document.addEventListener("DOMContentLoaded", function () {
   if(!paypal) return;
 
   // Fetch amount input
-  const amountInput = document.getElementById('amount');
-  const donationIdInput = document.getElementById('donation_id');
-  const thankYouMessageInput = document.getElementById('thank_you_message');
-  const cardNumberEl = document.getElementById('e_card_number');
-  const mmyyEl = document.getElementById('e_mmyy');
-  const cardHolderInput = document.getElementById('card-holder');
-  const submitButton = document.getElementById('submit-button');
+  const amountInput = document.getElementById('amountmodal');
+  const donationIdInput = document.getElementById('donation_idmodal');
+  const thankYouMessageInput = document.getElementById('thank_you_messagemodal');
+  const cardNumberEl = document.getElementById('e_card_numbermodal');
+  const mmyyEl = document.getElementById('e_mmyymodal');
+  const cardHolderInput = document.getElementById('card-holdermodal');
+  const submitButton = document.getElementById('submit-buttonmodal');
 
   // Select all buttons with the class 'js-select-amount'
-  const buttons = document.querySelectorAll('.js-select-amount');
+  const buttons = document.querySelectorAll('.js-select-amountmodal');
 
   // Add click event listener to each button
   buttons.forEach(button => {
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error(err);
       resultErrorMessage(`An error occurred during the transaction: ${err.message}`);
     }
-  }).render('#paypal-button-container');
+  }).render('#paypal-button-containermodal');
 
   paypal.HostedFields.render({
     createOrder: function () {
@@ -110,20 +110,20 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     fields: {
       number: {
-        selector: '#card-number',
+        selector: '#card-numbermodal',
         placeholder: cardNumberEl.value
       },
       cvv: {
-        selector: '#cvv',
+        selector: '#cvvmodal',
         placeholder: 'CVV'
       },
       expirationDate: {
-        selector: '#expiration-date',
+        selector: '#expiration-datemodal',
         placeholder: mmyyEl.value
       }
     }
   }).then(function (hostedFields) {
-    document.querySelector('#submit-button').addEventListener('click', function (event) {
+    document.querySelector('#submit-buttonmodal').addEventListener('click', function (event) {
       event.preventDefault();
       submitButton.classList.add('dp-loading');
       submitButton.disabled = true;
@@ -158,21 +158,21 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function resultMessage(message) {
-    const container = document.querySelector('#result-message');
-    container.innerHTML = `${message} <span id="dp-countdown">5s</span>`;
+    const container = document.querySelector('#result-messagemodal');
+    container.innerHTML = `${message} <span id="dp-countdownmodal">5s</span>`;
     container.classList.remove("dp-none")
     startCountdown(container);
   }
 
   function resultErrorMessage(message) {
-    const container = document.querySelector('#result-error-message');
-    container.innerHTML = `${message} <span id="dp-countdown">5s</span>`;
+    const container = document.querySelector('#result-error-messagemodal');
+    container.innerHTML = `${message} <span id="dp-countdownmodal">5s</span>`;
     container.classList.remove("dp-none")
     startCountdown(container);
   }
 
   function startCountdown(container) {
-    let countdownElement = container.querySelector('#dp-countdown');
+    let countdownElement = container.querySelector('#dp-countdownmodal');
     let countdown = 5;
     const interval = setInterval(() => {
       countdown--;

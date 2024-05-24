@@ -73,6 +73,7 @@ class Donations_Plugin_Public {
 	public function enqueue_scripts() {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/donations-plugin-public.js', array( 'jquery' ), $this->version, false );
-	
+		wp_enqueue_script( $this->plugin_name.'modal', plugin_dir_url( __FILE__ ) . 'js/donations-plugin-public-modal.js', array( 'jquery' ), $this->version, false );
+
 	}
 }

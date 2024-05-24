@@ -142,6 +142,7 @@ class Donations_Plugin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/shortcode/class-shortcode.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/shortcode/class-donation-shortcode.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/shortcode/class-progress-bar-shortcode.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'src/shortcode/class-donation-modal-shortcode.php';
 
 		/**
 		 * The classes responsible for defining all actions about cpts.
@@ -204,10 +205,12 @@ class Donations_Plugin {
 		// Initialize shortcode
 		$donation_shortcode = new Donation_Shortcode();
 		$progress_bar_shortcode = new Progress_Bar_Shortcode();
+		$donation_modal_shortcode = new Donation_Modal_Shortcode();
 
 		// Initialize
 		$donation_shortcode->register_shortcode();
 		$progress_bar_shortcode->register_shortcode();
+		$donation_modal_shortcode->register_shortcode();
 	}
 
 	/**

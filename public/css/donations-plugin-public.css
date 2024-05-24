@@ -55,7 +55,7 @@
     right: 0;
 }
 
-.dp-input-group input, .dp-input-group > div {
+.dp-input-group input, .dp-input-group > div, .dp-input-group select {
     border-radius: 4px;
     border-width: 1px;
     background-color: rgb(255, 255, 255);
@@ -70,7 +70,17 @@
     appearance: none;
 }
 
-.db-submit-button {
+.dp-input-group select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 99%;
+    background-position-y: 11px;
+}
+
+.dp-submit-button {
     border-radius: 4px;
     background-color: #2c2e2f;
     color: white;
@@ -80,6 +90,18 @@
     padding: 17px 15px;
     margin-bottom: 20px;
     font-size: 18px;
+    cursor: pointer;
+}
+
+.dp-donate-button {
+    border-radius: 4px;
+    background-color: #2c2e2f;
+    color: white;
+    border: none;
+    outline: none;
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    font-size: 15px;
     cursor: pointer;
 }
 
@@ -153,4 +175,50 @@
 
 .dp-funded-info h5 {
     margin-bottom: 10px;
+}
+
+/* The Modal (background) */
+.dp-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 101; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%; /* Full width */
+    height: 100vh; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    box-shadow: 0 0 0 100vmax rgba(0,0,0,.5);
+}
+
+
+.dp-modal h2 {
+    margin-top: 0;
+}
+
+/* Modal Content */
+.dp-modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 0 0 100vmax rgba(0,0,0,.5);
+}
+
+/* The Close Button */
+.dp-close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.dp-close:hover,
+.dp-close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }

@@ -4,9 +4,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly;
 
 /**
- * Class DonationShortcode
+ * Class Donation_Modal_Shortcode
  */
-class Donation_Shortcode extends Shortcode {
+class Donation_Modal_Shortcode extends Shortcode {
+
+	/**
+	 * @var Donation_Service
+	 */
+	private $donation_service;
+
+	public function __construct() {
+		$this->donation_service = new Donation_Service();
+	}
 
 	/**
 	 * Defines shortcode string
@@ -14,7 +23,7 @@ class Donation_Shortcode extends Shortcode {
 	 * @return string
 	 */
 	public static function get_shortcode() {
-		return 'simple_donation';
+		return 'dp_donation_modal';
 	}
 
 	/**
@@ -25,24 +34,14 @@ class Donation_Shortcode extends Shortcode {
 	 * @return false|string
 	 */
 	public function render($atts) {
-		// Attributes
-		$atts = shortcode_atts(
-			array(
-				'id' => null
-			),
-			$atts,
-			static::get_shortcode()
-		);
-
 		// Capture the output of the included template file
 		ob_start();
 
-		// Donation id
-		$donation_id = $atts['id'];
-		$id_suffix = '';
+		// Gets donations
+		$donations = $this->donation_service->get_all();
 
 		// Gets template
-		$template_path = dirname( __FILE__ ) . '/../../public/partials/donation-form-template.php';
+		$template_path = dirname( __FILE__ ) . '/../../public/partials/donation-modal-template.php';
 
 		// Check if exists template path
 		if ($template_path) {
