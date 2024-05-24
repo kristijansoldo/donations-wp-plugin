@@ -14,7 +14,7 @@ class Donation_Shortcode extends Shortcode {
 	 * @return string
 	 */
 	public static function get_shortcode() {
-		return 'simple_donation';
+		return 'dp_donation';
 	}
 
 	/**
