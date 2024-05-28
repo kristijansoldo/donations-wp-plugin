@@ -93,6 +93,8 @@
     cursor: pointer;
 }
 
+
+
 .dp-donate-button {
     border-radius: 4px;
     background-color: #2c2e2f;
@@ -220,4 +222,7 @@
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+.dp-error {
+    border: 1px solid red !important;
 }

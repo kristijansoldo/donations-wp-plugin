@@ -61,6 +61,7 @@ if ( ! empty( $predefined_amounts_string ) ) {
                 <div class="dp-input-group">
                     <select name="<?php echo Donation_Payment::$post_meta['donation_id']; ?>"
                             id="donation_id<?php echo $id_suffix; ?>">
+                        <option selected="true" disabled="disabled"><?php echo _e('Select donation', DP_PLUGIN_TEXTOMAIN); ?></option>
 		                <?php foreach ( $donations as $donation ): ?>
                             <option value="<?php echo $donation->id ?>"><?php echo $donation->title; ?></option>
 		                <?php endforeach; ?>

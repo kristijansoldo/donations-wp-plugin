@@ -23,6 +23,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   paypal.Buttons({
     createOrder: async function () {
+      if (!validateAmountInput()) {
+        resultErrorMessage('Amount is required.');
+        return;
+      }
       const donationId = donationIdInput.value;
       const amount = amountInput.value;
       try {
@@ -91,6 +95,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if(paypal.HostedFields.isEligible()) {
     paypal.HostedFields.render({
       createOrder: function () {
+        if (!validateAmountInput()) {
+          resultErrorMessage('Amount is required.');
+          throw new Error('Validation failed: Amount is required.');
+        }
         return fetch('/wp-json/dp/v1/orders', {
           method: 'POST',
           headers: {
@@ -191,5 +199,14 @@ document.addEventListener("DOMContentLoaded", function () {
         container.classList.add("dp-none");
       }
     }, 1000);
+  }
+  function validateAmountInput() {
+    if (!amountInput.value) {
+      amountInput.classList.add('dp-error');
+      return false;
+    } else {
+      amountInput.classList.remove('dp-error');
+      return true;
+    }
   }
 });
