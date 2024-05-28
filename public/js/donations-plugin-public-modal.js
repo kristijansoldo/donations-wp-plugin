@@ -164,6 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('cvvmodal').parentElement.classList.add('dp-none')
         document.getElementById('expiration-datemodal').parentElement.classList.add('dp-none')
         cardHolderInput.parentElement.classList.add('dp-none');
+        submitButton.classList.add('dp-none');
     }
 
     function resultMessage(message) {

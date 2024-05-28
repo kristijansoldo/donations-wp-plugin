@@ -162,6 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('cvv').parentElement.classList.add('dp-none')
     document.getElementById('expiration-date').parentElement.classList.add('dp-none')
     cardHolderInput.parentElement.classList.add('dp-none');
+    submitButton.classList.add('dp-none');
   }
 
 
