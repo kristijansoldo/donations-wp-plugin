@@ -39,6 +39,9 @@ if ( ! empty( $predefined_amounts_string ) ) {
         <input type="hidden" name="e_card_number" id="e_card_number<?php echo $id_suffix; ?>" value="<?php _e('Card number', DP_PLUGIN_TEXTOMAIN) ?>">
         <input type="hidden" name="e_mmyy" id="e_mmyy<?php echo $id_suffix; ?>" value="<?php _e('MM/YY', DP_PLUGIN_TEXTOMAIN) ?>">
 
+        <div class="dp-before-description">
+            <?php echo General_Settings::get(General_Settings::DESCRIPTION_BEFORE); ?>
+        </div>
         <div>
 			<?php if ( ! empty( $predefined_amounts_string ) ): ?>
                 <div class="dp-button-group">
@@ -86,6 +89,10 @@ if ( ! empty( $predefined_amounts_string ) ) {
 
         <div class="donations-plugin-success dp-none" id="result-message<?php echo $id_suffix; ?>"></div>
         <div class="donations-plugin-error dp-none" id="result-error-message<?php echo $id_suffix; ?>"></div>
+
+        <div class="dp-after-description">
+			<?php echo General_Settings::get(General_Settings::DESCRIPTION_AFTER); ?>
+        </div>
 	<?php endif; ?>
 </div>
 

@@ -88,74 +88,82 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }).render('#paypal-button-container');
 
-  paypal.HostedFields.render({
-    createOrder: function () {
-      return fetch('/wp-json/dp/v1/orders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount: amountInput.value,
-        }),
-      }).then(res => res.json()).then(orderData => orderData.id);
-    },
-    styles: {
-      '.valid': {
-        'color': 'green'
-      },
-      '.invalid': {
-        'color': 'red'
-      }
-    },
-    fields: {
-      number: {
-        selector: '#card-number',
-        placeholder: cardNumberEl.value
-      },
-      cvv: {
-        selector: '#cvv',
-        placeholder: 'CVV'
-      },
-      expirationDate: {
-        selector: '#expiration-date',
-        placeholder: mmyyEl.value
-      }
-    }
-  }).then(function (hostedFields) {
-    document.querySelector('#submit-button').addEventListener('click', function (event) {
-      event.preventDefault();
-      submitButton.classList.add('dp-loading');
-      submitButton.disabled = true;
-      hostedFields.submit({
-        cardholderName: cardHolderInput.value
-      }).then(function (payload) {
-        fetch(`/wp-json/dp/v1/orders/${payload.orderID}/capture`, {
+  if(paypal.HostedFields.isEligible()) {
+    paypal.HostedFields.render({
+      createOrder: function () {
+        return fetch('/wp-json/dp/v1/orders', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ donationId: donationIdInput.value })
-        }).then(res => res.json()).then(orderData => {
-          const transaction = orderData.purchase_units[0].payments.captures[0];
-          resultMessage(thankYouMessageInput.value);
-          console.log('Transaction completed', transaction);
-          submitButton.classList.remove('dp-loading');
-          submitButton.disabled = false;
+          body: JSON.stringify({
+            amount: amountInput.value,
+          }),
+        }).then(res => res.json()).then(orderData => orderData.id);
+      },
+      styles: {
+        '.valid': {
+          'color': 'green'
+        },
+        '.invalid': {
+          'color': 'red'
+        }
+      },
+      fields: {
+        number: {
+          selector: '#card-number',
+          placeholder: cardNumberEl.value
+        },
+        cvv: {
+          selector: '#cvv',
+          placeholder: 'CVV'
+        },
+        expirationDate: {
+          selector: '#expiration-date',
+          placeholder: mmyyEl.value
+        }
+      }
+    }).then(function (hostedFields) {
+      document.querySelector('#submit-button').addEventListener('click', function (event) {
+        event.preventDefault();
+        submitButton.classList.add('dp-loading');
+        submitButton.disabled = true;
+        hostedFields.submit({
+          cardholderName: cardHolderInput.value
+        }).then(function (payload) {
+          fetch(`/wp-json/dp/v1/orders/${payload.orderID}/capture`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ donationId: donationIdInput.value })
+          }).then(res => res.json()).then(orderData => {
+            const transaction = orderData.purchase_units[0].payments.captures[0];
+            resultMessage(thankYouMessageInput.value);
+            console.log('Transaction completed', transaction);
+            submitButton.classList.remove('dp-loading');
+            submitButton.disabled = false;
+          }).catch(err => {
+            console.error(err);
+            resultErrorMessage(`Transaction failed: ${err.message}`);
+            submitButton.classList.remove('dp-loading');
+            submitButton.disabled = false;
+          });
         }).catch(err => {
           console.error(err);
-          resultErrorMessage(`Transaction failed: ${err.message}`);
+          resultErrorMessage(`Error: ${err.message}`);
           submitButton.classList.remove('dp-loading');
           submitButton.disabled = false;
         });
-      }).catch(err => {
-        console.error(err);
-        resultErrorMessage(`Error: ${err.message}`);
-        submitButton.classList.remove('dp-loading');
-        submitButton.disabled = false;
       });
     });
-  });
+  }else {
+    document.getElementById('card-number').parentElement.classList.add('dp-none')
+    document.getElementById('cvv').parentElement.classList.add('dp-none')
+    document.getElementById('expiration-date').parentElement.classList.add('dp-none')
+    cardHolderInput.parentElement.classList.add('dp-none');
+  }
+
 
   function resultMessage(message) {
     const container = document.querySelector('#result-message');
